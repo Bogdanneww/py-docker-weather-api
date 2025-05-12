@@ -5,10 +5,10 @@ import os
 load_dotenv()
 
 
-def get_weather() -> dict:
+def get_weather() -> str:
     URL = "http://api.weatherapi.com/v1/current.json"
     CITY = "Paris"
-    res = requests.get(f"{URL}?key={os.getenv("API_KEY")}&q={CITY}")
+    res = requests.get(f"{URL}?key={os.getenv('API_KEY')}&q={CITY}")
     city = res.json()["location"]["name"]
     country = res.json()["location"]["country"]
     date = res.json()["location"]["localtime"]
@@ -17,7 +17,7 @@ def get_weather() -> dict:
         weather = "Cloudy"
     else:
         weather = "Sunny"
-    return f"{city}/{country} {date}, Wether: {temp_c} Celsius, {weather}"
+    return f"{city}/{country} {date}, Weather: {temp_c} Celsius, {weather}"
 
 
 if __name__ == "__main__":
