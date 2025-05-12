@@ -1,11 +1,13 @@
-FROM python:3.12-slim
-LABEL maintainer="mxbely98@gmail.com"
+FROM python:3.11.6-alpine3.18
+LABEL maintainer="bohdan.m.mykyichuk@gmail.com"
 
 ENV PYTHONUNBUFFERED=1
+
+WORKDIR /app
 
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
-COPY . .
+COPY app ./
 
-CMD ["python", "app/main.py"]
+CMD ["python", "main.py"]

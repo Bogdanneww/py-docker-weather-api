@@ -1,24 +1,25 @@
 import requests
-from dotenv import load_dotenv
+import sys
 import os
 
-load_dotenv()
+
+API_KEY = os.getenv("API_KEY")
 
 
-def get_weather() -> str:
-    URL = "http://api.weatherapi.com/v1/current.json"
-    CITY = "Paris"
-    res = requests.get(f"{URL}?key={os.getenv('API_KEY')}&q={CITY}")
-    city = res.json()["location"]["name"]
-    country = res.json()["location"]["country"]
-    date = res.json()["location"]["localtime"]
-    temp_c = res.json()["current"]["temp_c"]
-    if res.json()["current"]["cloud"] > 50:
-        weather = "Cloudy"
-    else:
-        weather = "Sunny"
-    return f"{city}/{country} {date}, Weather: {temp_c} Celsius, {weather}"
+def get_weather() -> None:
+    if not API_KEY:
+        print("Error: API_KEY environment variable is not set.")
+        sys.exit(1)
+
+    url = f"http://api.weatherapi.com/v1/current.json?key={API_KEY}&q=Paris"
+    response = requests.get(url)
+
+    if response.status_code == 401:
+        print("Error: Invalid API key.")
+        sys.exit(1)
+
+    print(response.json())
 
 
 if __name__ == "__main__":
-    print(get_weather())
+    get_weather()
